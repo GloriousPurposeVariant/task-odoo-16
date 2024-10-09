@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="email_template_sale_order_confirmation" model="mail.template">
+        <field name="name">Sale Order Confirmation Email</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="email_from">{{(user.email or 'no-reply@example.com')}}</field>
+        <field name="subject">Sale Order Confirmation - {{object.name}}</field>
+        <field name="body_html">
+            <![CDATA[
+            <p>Hello <t t-out="object.partner_id.name"/>, <t t-out="user.name"/></p>
+            <p>Your Sale Order <strong><t t-out="object.name"/></strong> has been confirmed.</p>
+            <br/>
+            <p>Here are the details of the products in your order:</p>
+            <br/>
+            <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="object.order_line" t-as="line">
+                        <tr>
+                            <td style="padding-left: 8px;"><t t-out="line.product_id.name"/></td>
+                            <td style="padding-left: 8px;"><t t-out="line.name"/></td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+            <br/>
+            <p>Thank you for your business.</p>
+        ]]>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+</odoo>

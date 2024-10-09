@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+
+    <record id="action_auto_send_email_sale_order" model="ir.actions.server">
+        <field name="name">Auto Send Email on Sale Order Confirmation</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">records.action_send_sale_mail()</field>
+    </record>
+
+    <record id="action_rule_sale_order_confirm" model="base.automation">
+        <field name="name">Auto Email on Sale Order Confirmation</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="state">code</field>
+        <field name="trigger">on_write</field>
+        <field name="filter_pre_domain">[('state', '=', 'sale')]</field>
+        <field name="action_server_id" ref="action_auto_send_email_sale_order"/>
+    </record>
+</odoo>
